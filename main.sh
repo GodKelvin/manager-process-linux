@@ -14,8 +14,10 @@ function try_kill(){
   if kill $sinal "$PID" 2>/dev/null; then
     show_process
     echo -e "\n>> $mensagem"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') >> $mensagem" >> "$LOG_FILE"
   else
-    echo "⚠️ Permissão negada"
+    echo "⚠️ Permissão de $sinal negada para o processo $PID"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') >> ⚠️ Permissão de $sinal negada para o processo $PID" >> "$LOG_FILE"
   fi
 }
 
@@ -51,6 +53,8 @@ function show_commands(){
 # Variaveis globais
 PID=$1
 ACAO=$2
+LOG_FILE="list_process.log"
+
 show_process
 # Loop principal, só é encerrado quando o comando sair é  requisitado
 while true; do
