@@ -27,11 +27,11 @@ function show_commands(){
   read -p "Informe o comando Desejado: " comando
     case "$comando" in
       p)
-        try_kill -STOP "⏳ Processo $PID pausado"
+        try_kill -STOP "🛑 Processo $PID pausado"
         return
         ;;
       c)
-        try_kill -CONT "🎉 Processo $PID continuado"
+        try_kill -CONT "▶️ Processo $PID continuado"
         return
         ;;
       m)
