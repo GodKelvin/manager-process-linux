@@ -3,22 +3,37 @@ function show_process(){
 }
 
 function get_pid(){
+  echo
   read -p "Informe o PID do processo ou digite 's' para sair: " PID
 }
 
+function try_kill(){
+  local sinal=$1
+  local mensagem=$2
+
+  if kill $sinal "$PID" 2>/dev/null; then
+    show_process
+    echo -e "\n>> $mensagem"
+  else
+    echo "⚠️ Permissão negada"
+  fi
+}
+
 function show_commands(){
+  echo "Processo selecionado: $PID"
+  echo -e "Comandos disponíveis: p-pausar, c-continuar, m-matar, s-sair"
   read -p "Informe o comando Desejado: " comando
     case "$comando" in
       p)
-        kill -STOP "$PID" && echo ">> Processo pausado"
+        try_kill -STOP "⏳ Processo $PID pausado"
         return
         ;;
       c)
-        kill -CONT "$PID" && echo ">> Processo continuado"
+        try_kill -CONT "🎉 Processo $PID continuado"
         return
         ;;
       m)
-        kill -9 "$PID" && echo ">> Processo finalizado"
+        try_kill -9 "☠️ Processo $PID finalizado"
         return
         ;;
       s)
@@ -33,15 +48,13 @@ function show_commands(){
     esac
 }
 
-
-
-
-
-# Variaveis
+# Variaveis globais
 PID=$1
 ACAO=$2
+show_process
+# Loop principal, só é encerrado quando o comando sair é  requisitado
 while true; do
-  show_process
+  
   get_pid
   # Desejou sair do programa
   if [[ "$PID" == "s" ]]; then
@@ -56,7 +69,6 @@ while true; do
   # Se o processo foi encontrado, lista as possibilidades
   else
     echo -e "\nProcesso encontrado: $PID"
-    echo -e "Comandos disponíveis: p-pausar, c-continuar, m-matar, s-sair"
     show_commands
     echo
   fi
