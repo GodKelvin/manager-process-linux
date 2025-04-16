@@ -53,7 +53,7 @@ function show_commands(){
 # Variaveis globais
 PID=$1
 ACAO=$2
-LOG_FILE="list_process.log"
+LOG_FILE="manager_process.log"
 
 show_process
 # Loop principal, só é encerrado quando o comando sair é  requisitado
